@@ -4,8 +4,6 @@ This is a simple Os for the BeagleBone black. This is the continuation of a prev
 
 # Todo
 Comment Makefiles.
-https://stackoverflow.com/questions/14880419/share-variables-between-makefiles
-https://stackoverflow.com/questions/12697012/passing-variables-from-include-directive-to-sub-make
 Add sd card formattign script.
 Add reference for the compilation options document.
 
@@ -29,7 +27,7 @@ See the Makefile at the root of this directory for compilation flags.
 |            |                                            | /fpu         |
 --------------------------------------------------------------------------
 - [ ] Compilation: use arm instruction (-marm option in gcc)
-
+- In the .list, there are stange instructions at the end of section .text.boot (near halt func)
 
 # Linker script
 - [ ] Output arch options in linker script
@@ -61,6 +59,7 @@ See the Makefile at the root of this directory for compilation flags.
 - [x] Undefined instruction handler
 - [ ] Irq handler
 - [x] Fiq handler: print message.
+- Check exceptions handlers.  
 
 |    Value   | r0 Code       |     r1                     |   r2                   | return (r0)            |
 | ---------- | ------------- | -------------------------- | ---------------------- | ---------------------- |

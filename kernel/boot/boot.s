@@ -97,7 +97,7 @@ _start:
     cpsie i
 
 	call_main:
-		//ldr pc,=kmain
+		ldr pc,=kmain
 
     halt:
         b halt
