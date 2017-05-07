@@ -8,9 +8,12 @@ LD=${PREFIX}-ld
 AR=${PREFIX}-ar
 AS=${PREFIX}-as
 
+
+
+
 # Flags
 ASFLAGS=--warn -mcpu=cortex-a8
-CFLAGS=-I ../include -c -nodefaultlibs -nostdlib -nostartfiles -ffreestanding -mcpu=cortex-a8 -march=armv7-a -pedantic -Wextra -std=c99 -O0
+CFLAGS=-I ../include -Wall -c -nodefaultlibs -nostdlib -nostartfiles -ffreestanding -mcpu=cortex-a8 -march=armv7-a -pedantic -Wextra -std=c99 -O0
 LDFLAGS = -T linker.ld -nodefaultlibs -nostdlib -nostartfiles
 
 export # Make variables visible to sub-makefiles
