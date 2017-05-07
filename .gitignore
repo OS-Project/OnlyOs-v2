@@ -1,0 +1,6 @@
+*.bin
+*.elf
+*.list
+*.sections
+*.srec
+*.out

@@ -1,0 +1,15 @@
+# uEnv.txt : Created by Thibault PIANA & Alan GARDIN : 09/12/2015
+
+# U-boot configuration
+loadaddr=0x80000000
+
+# Kernel configuration
+kernel_file=boot.bin
+entry_point=0x80000000
+
+# Commands
+home_message=echo Made by Thibault PIANA et Alan GARDIN, 2015-2016
+loadkernel=fatload mmc 0 ${loadaddr} ${kernel_file}
+uenvcmd=run home_message;run loadkernel; go ${entry_point}
+
+# Remarque : Sous beaglebone, la commande principale est uenvcmd et non bootcmd !
