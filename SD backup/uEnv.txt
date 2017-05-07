@@ -8,7 +8,7 @@ kernel_file=boot.bin
 entry_point=0x80000000
 
 # Commands
-home_message=echo Made by Thibault PIANA et Alan GARDIN, 2015-2016
+home_message=echo Made by Thibault PIANA and Alan GARDIN, 2015-2016
 loadkernel=fatload mmc 0 ${loadaddr} ${kernel_file}
 uenvcmd=run home_message;run loadkernel; go ${entry_point}
 

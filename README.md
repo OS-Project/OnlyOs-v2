@@ -9,6 +9,7 @@ https://stackoverflow.com/questions/12697012/passing-variables-from-include-dire
 
 # Compilation
 Each part of the os is a directory. The root Makefile call each subdir's Makefile, and then link everything together.
+See the Makefile at the root of this directory for compilation flags.  
 - [ ] Compilation: use arm instruction (-marm option in gcc)
 
 # Linker script
@@ -70,39 +71,6 @@ How to compile newlib ?
 
 sources : https://gcc.gnu.org/ml/gcc-help/2012-08/msg00190.html
 ./configure --target=arm-none-eabi --enable-interwork --enable-multilib --with-newlib --disable-nls --disable-shared --disable-threads --with-gnu-ld --with-gnu-as --disable-libssp --disable-libmudflap --disable-libgomp --with-dwarf2 -v --disable-werror --with-cpu=cortex-a8 --with-mode=thumb --enable-target-optspace --with-fpu=fpv4-sp-d16 --with-float=soft --enable-languages=c,c++ --disable-newlib-multithread
-
-# Configure toolchain
-PREFIX=arm-none-eabi
-
-# Compiler, Linker and Archiver with respect to the toolchain
-CC=${PREFIX}-gcc
-CPP=${PREFIX}-g++
-LD=${PREFIX}-ld
-AR=${PREFIX}-ar
-AS=${PREFIX}-as
-BIN=$(PREFIX)-objcopy
-
-# Source code paths
-BOOT_SRC=${ROOT}/boot
-ARCH_SRC=${ROOT}/arch
-DRIVER_SRC=${ROOT}/drivers
-KERNEL_SRC=${ROOT}/kernel
-HAL_SRC=${ARCH_SRC}/arm/hal
-SYSCALLS_SRC=${ROOT}/syscalls
-
-BIN_SRC=${ROOT}/bin/${C_MODE}
-BIN_LIBS_SRC=${BIN_SRC}/libs
-
-# Files paths
-LINKER_PATH = ${ROOT}/build/linker.ld
-
-# Include paths
-IPATH=-I ${ROOT}/include/arch/arm \
-      -I ${ROOT}/include/arch/arm/hal/hw \
-      -I ${ROOT}/include \
-      -I ${ROOT}/build
-
-LPATH = -L${ROOT}/build
 
 # Flags
 CCFLAGS = -Wall ${IPATH} -nodefaultlibs -nostdlib -nostartfiles -ffreestanding -mcpu=cortex-a8 -march=armv7-a -pedantic -Wextra -std=c99 -O0

@@ -4,15 +4,15 @@ export
 
 all: $(SUBDIRS) kernel.c
 	@echo "Compiling kernel..."
-	arm-none-eabi-gcc $(CFLAGS) kernel.c -o kernel.out
-	arm-none-eabi-ar r ../kernel.out interrupt.out boot.out kernel.out
+	$(CC) $(CFLAGS) kernel.c -o kernel.out
+	$(AR) r ../kernel.out interrupt.out boot.out kernel.out
 
 # For each sub directory, call the makefile inside it.
 $(SUBDIRS):
 	$(MAKE) -C $@
 
 clean:
+	// FIXME: call make clean for each subdir.
 	@rm *.out
-
 
 .PHONY: $(SUBDIRS)
