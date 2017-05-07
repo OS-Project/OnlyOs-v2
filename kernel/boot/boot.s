@@ -32,6 +32,11 @@
 
 .section ".text.boot"
 _start:
+
+    // Disable irq and fiq.
+    cpsid i
+    cpsid f
+
 	stack_init:
 		// Stack is empty descending.
 		ldr r0, =_estack
@@ -84,14 +89,21 @@ _start:
 		ldmia r1!, {r2-r8}
 		stmia r0!, {r2-r8}
 
-	// Disable fiq. Enable irq
-	cpsie i
-	cpsid f
-
     // Sign of life.
-    mov r1, #'!'
-    ldr r0, =0x44e09000
-    strb r1, [r0]
+    mov r0, #'X'
+    bl uart_printChar
+
+    // Enable irq
+    cpsie i
 
 	call_main:
-		ldr pc,=kmain
+		//ldr pc,=kmain
+
+    halt:
+        b halt
+
+.section ".text"
+uart_printChar:
+    ldr r1, =0x44e09000 // UART0 base address. See memory map.
+    strb r0, [r1]
+    mov pc, lr

@@ -1,19 +1,23 @@
 # OnlyOS
 The operating system
 
-# Compilation instruction
-Each part of the os is a directory. The root Makefile call each subdir's Makefile, and then link everything together.
-
-
 # Todo
 Comment Makefiles.
-https://stackoverflow.com/questions/14880419/share-variables-between-makefiles  
+https://stackoverflow.com/questions/14880419/share-variables-between-makefiles
 https://stackoverflow.com/questions/12697012/passing-variables-from-include-directive-to-sub-make
 
-# Kernel
-- [ ] kexit() or call to _exit() syscall ?
-- [x] Disable interrupts in exit function
 
+# Compilation
+Each part of the os is a directory. The root Makefile call each subdir's Makefile, and then link everything together.
+- [ ] Compilation: use arm instruction (-marm option in gcc)
+
+# Linker script
+- [ ] Output arch options in linker script
+- [ ] Program entry-point details: is it a symbol?
+- [ ] Stack sizes justification.
+
+# Assembly
+- [x] Difference .code 32 and .arm: none.
 
 # Boot
 - [x] Disable fiq, enable irq.
@@ -22,16 +26,9 @@ https://stackoverflow.com/questions/12697012/passing-variables-from-include-dire
 - [x] Stack implementation: FA, FD, EA, ED? Currently ED.
 - [x] Init stacks for all modes. Stack sizes in boot.s must match the linker script.
 - [x] Clear .bss section.
-- [x] Call main function: do not use branch. Address may be out of range.
+- [ ] Call main function: do not use branch. Address may be out of range.
 - [ ] Prefetch abort and data abort modes differences?
 - [ ] Branch prediction p59 Cortex Guide.
-
-# Linker script
-- [ ] Output arch options in linker script
-- [ ] Program entry-point details: is it a symbol?
-- [ ] Stack sizes justification.  
-- [ ]
-
 
 # Interrupts/Exceptions handling
 - [x] Interruption table.
@@ -50,9 +47,12 @@ https://stackoverflow.com/questions/12697012/passing-variables-from-include-dire
 | kmalloc    | 0x00201       |  process heap_start adress | Null                   | adress of memory block |
 
 
+# Kernel
+- [ ] kexit() or call to _exit() syscall ?
+- [x] Disable interrupts in exit function
+
 # Filesystem driver
 - [ ] File system (must code diskio.c)
-
 
 # UART driver
 - [ ] uart_init(): causes crashes
@@ -63,22 +63,7 @@ https://stackoverflow.com/questions/12697012/passing-variables-from-include-dire
 - uart_write_byte(): alternate version using diferrent register?
 - uart_read_byte(): alternate version for signed values?
 
-
 # Misc
-How to compile a new source ?
------------------------------
-Create a file "makesrc" in the directory of the source(s) file(s) and add the name of the sources inside.
-The script will automaticaly reconize the files and compile them.
-
-Bugs for asm source files.
-
-Questions
----------
-- fichier tempo en C
-- [ ] Compilation: use arm instruction (-marm option in gcc)
-- [x] Difference .code 32 and .arm: none.
-
-
 How to compile newlib ?
 -----------------------
 ./configure --target=arm-none-eabi --enable-interwork --enable-multilib --with-gnu-as --with-gnu-ld --disable-shared --disable-libssp --disable-libada --disable-newlib-supplied-syscalls --enable-lite-exit --disable-newlib-multithread
