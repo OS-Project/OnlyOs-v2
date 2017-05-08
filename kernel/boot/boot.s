@@ -90,9 +90,13 @@ _start:
 		stmia r0!, {r2-r8}
 
 	call_main:
-		bl svc_asm_call
+        mov r0, #'\n'
+        bl uart_printChar
 
-        mov r0, #'X'
+        ldr r0, =init_done
+		bl uart_printStr
+
+        mov r0, #'\n'
         bl uart_printChar
 
     halt:
@@ -110,3 +114,8 @@ dump_regs:
     bl uart_printChar
     // Recover r0
     mov pc, lr
+
+.section ".rodata"
+.align 2
+init_done: .ascii "Boot init done."
+.int 0
