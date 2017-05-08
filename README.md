@@ -3,7 +3,6 @@ This is a simple Os for the BeagleBone black. This is the continuation of a prev
 
 
 # Todo
-Comment Makefiles.
 Add sd card formatting script.
 Add reference for the compilation options document.
 
@@ -36,15 +35,14 @@ See the Makefile at the root of this directory for compilation flags.
 
 
 # Assembly
-- [x] Difference .code 32 and .arm: none.
+- Difference between ".code 32" and ".arm": none.
 - Stack if full descending: the Procedure Call Standard for the ARM Architecture (AAPCS), and ARM and Thumb C and C++ compilers always use a full descending stack. The PUSH and POP instructions assume a full descending stack. (http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473c/Cacbgchh.html)
 
 
 # Boot
-- [x] Disable fiq, enable irq.
+- [ ] Disable fiq, enable irq.
 - [x] Check flags values for processor modes in the doc.
 - [x] Check flags values for irq and fiq in the doc.
-- [x] Stack implementation: FA, FD, EA, ED? Currently ED.
 - [x] Init stacks for all modes. Stack sizes in boot.s must match the linker script.
 - [x] Clear .bss section.
 - [ ] Call main function: do not use branch. Address may be out of range.

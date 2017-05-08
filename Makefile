@@ -1,5 +1,5 @@
 FILE_NAME = boot
-SUBDIRS = kernel
+SUBDIRS = kernel drivers
 
 # Configure toolchain
 PREFIX=arm-none-eabi
@@ -7,9 +7,6 @@ CC=${PREFIX}-gcc
 LD=${PREFIX}-ld
 AR=${PREFIX}-ar
 AS=${PREFIX}-as
-
-
-
 
 # Flags
 ASFLAGS=--warn -mcpu=cortex-a8
@@ -21,7 +18,7 @@ export # Make variables visible to sub-makefiles
 
 all: $(SUBDIRS)
 	@echo "\n### Linkage des sources"
-	$(LD) $(LDFLAGS) kernel.out -o ${FILE_NAME}.elf
+	$(LD) $(LDFLAGS) kernel.out drivers.out -o ${FILE_NAME}.elf
 	$(PREFIX)-nm ${FILE_NAME}.elf -n > ${FILE_NAME}.sections
 	$(PREFIX)-objdump -D ${FILE_NAME}.elf > ${FILE_NAME}.list
 	$(PREFIX)-objcopy ${FILE_NAME}.elf -O srec ${FILE_NAME}.srec

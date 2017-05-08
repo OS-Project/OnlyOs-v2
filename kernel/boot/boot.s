@@ -24,19 +24,18 @@
 .equ IRQ_BIT, 0x80
 
 
-.global _start
-.global error
-.global svc_asm_call
-
 .include "interrupt.s"
 
 .section ".text.boot"
+.extern uart_printChar
+.global _start
 _start:
 
     // Disable irq and fiq.
     cpsid i
     cpsid f
 
+    /* Init the stacks for each processor mode. */
 	stack_init:
         // FIXME: full descending stack
 		// Stack is empty descending.
@@ -90,13 +89,6 @@ _start:
 		ldmia r1!, {r2-r8}
 		stmia r0!, {r2-r8}
 
-    // Sign of life.
-    mov r0, #'X'
-    bl uart_printChar
-
-    // Enable irq
-    cpsie i
-
 	call_main:
 		bl svc_asm_call
 
@@ -107,11 +99,7 @@ _start:
         b halt
 
 .section ".text"
-uart_printChar:
-    ldr r1, =0x44e09000 // UART0 base address. See memory map.
-    strb r0, [r1]
-    mov pc, lr
-
+.global dump_regs
 dump_regs:
     // Preserve r0, r1
     mov r0, #'r'

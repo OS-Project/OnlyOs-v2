@@ -13,6 +13,8 @@ vector_table:
 .section ".text.interrupt_handler"
 .global svc_asm_call
 .extern INT_IRQ_handler
+.extern uart_printChar
+
 
 fiq_handler:
 	mov r0, #77
@@ -89,6 +91,8 @@ svc_handler:
 	ldmfd sp!, {r4-r11,lr}
     movs pc,lr // Exit the handler and return to code. See page A2-20 of the ARM Architecture Manual.
 
+
+.global svc_asm_call
 svc_asm_call:
 	svc #0
 	mov pc, lr
