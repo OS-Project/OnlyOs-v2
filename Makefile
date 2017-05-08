@@ -33,6 +33,6 @@ $(SUBDIRS):
 
 clean:
 	@rm ${FILE_NAME}.* *.out
-	// FIXME: call make clean for each subdir.
+	$(MAKE) -C kernel clean
 
 .PHONY: $(SUBDIRS)

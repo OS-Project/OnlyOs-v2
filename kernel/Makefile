@@ -12,7 +12,6 @@ $(SUBDIRS):
 	$(MAKE) -C $@
 
 clean:
-	// FIXME: call make clean for each subdir.
 	@rm *.out
 
 .PHONY: $(SUBDIRS)
