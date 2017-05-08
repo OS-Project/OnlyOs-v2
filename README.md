@@ -4,7 +4,7 @@ This is a simple Os for the BeagleBone black. This is the continuation of a prev
 
 # Todo
 Comment Makefiles.
-Add sd card formattign script.
+Add sd card formatting script.
 Add reference for the compilation options document.
 
 # Compilation
@@ -37,6 +37,7 @@ See the Makefile at the root of this directory for compilation flags.
 
 # Assembly
 - [x] Difference .code 32 and .arm: none.
+- Stack if full descending: the Procedure Call Standard for the ARM Architecture (AAPCS), and ARM and Thumb C and C++ compilers always use a full descending stack. The PUSH and POP instructions assume a full descending stack. (http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473c/Cacbgchh.html)
 
 
 # Boot
@@ -52,14 +53,16 @@ See the Makefile at the root of this directory for compilation flags.
 
 
 # Interrupts/Exceptions handling
+- Always save spsr, as an other exception might occur, hence resulting in the loss of spsr.
 - [x] Interruption table.
 - [x] Svc call.
 - [x] Svc handler
-- [x] Abort handler
-- [x] Undefined instruction handler
+- [ ] Abort handler
+- [ ] Undefined instruction handler
 - [ ] Irq handler
-- [x] Fiq handler: print message.
-- Check exceptions handlers.  
+- [ ] Fiq handler: print message.
+- Check exceptions handlers.
+- Add routine to indicates the current processor state.
 
 |    Value   | r0 Code       |     r1                     |   r2                   | return (r0)            |
 | ---------- | ------------- | -------------------------- | ---------------------- | ---------------------- |

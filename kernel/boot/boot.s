@@ -38,31 +38,32 @@ _start:
     cpsid f
 
 	stack_init:
+        // FIXME: full descending stack
 		// Stack is empty descending.
 		ldr r0, =_estack
-        	msr cpsr_c, #MODE_UND | IRQ_BIT | FIQ_BIT
-       		mov sp, r0
+    	msr cpsr_c, #MODE_UND | IRQ_BIT | FIQ_BIT
+   		mov sp, r0
 		sub r0, r0, #UND_STACK_SIZE
 
 		msr cpsr_c, #MODE_SVC | IRQ_BIT | FIQ_BIT
-        	mov sp, r0
+    	mov sp, r0
 		sub r0, r0, #SVC_STACK_SIZE
 
-        	msr cpsr_c, #MODE_ABT | IRQ_BIT | FIQ_BIT
-        	mov sp, r0
+    	msr cpsr_c, #MODE_ABT | IRQ_BIT | FIQ_BIT
+    	mov sp, r0
 		sub r0, r0, #ABT_STACK_SIZE
 
-        	msr cpsr_c, #MODE_IRQ | IRQ_BIT | FIQ_BIT
-        	mov sp, r0
+    	msr cpsr_c, #MODE_IRQ | IRQ_BIT | FIQ_BIT
+    	mov sp, r0
 		sub r0, r0, #IRQ_STACK_SIZE
 
-        	msr cpsr_c, #MODE_FIQ | IRQ_BIT | FIQ_BIT
-        	mov sp, r0
+    	msr cpsr_c, #MODE_FIQ | IRQ_BIT | FIQ_BIT
+    	mov sp, r0
 		sub r0, r0, #FIQ_STACK_SIZE
 
-        	// Kernel mode
-        	msr cpsr_c, #MODE_SYS | IRQ_BIT | FIQ_BIT
-        	mov sp, r0
+    	// Kernel mode
+    	msr cpsr_c, #MODE_SYS | IRQ_BIT | FIQ_BIT
+    	mov sp, r0
 
 	bss_init:
         	ldr r0, =_sbss
@@ -97,7 +98,10 @@ _start:
     cpsie i
 
 	call_main:
-		ldr pc,=kmain
+		bl svc_asm_call
+
+        mov r0, #'X'
+        bl uart_printChar
 
     halt:
         b halt
@@ -106,4 +110,15 @@ _start:
 uart_printChar:
     ldr r1, =0x44e09000 // UART0 base address. See memory map.
     strb r0, [r1]
+    mov pc, lr
+
+dump_regs:
+    // Preserve r0, r1
+    mov r0, #'r'
+    bl uart_printChar
+    mov r0, #'0'
+    bl uart_printChar
+    mov r0, #':'
+    bl uart_printChar
+    // Recover r0
     mov pc, lr

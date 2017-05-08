@@ -53,23 +53,41 @@ undefined_handler:
 	mov r0, #11
 	b kexit
 
+/*
+    Inspired from: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0203j/Cacdfeci.html
+*/
 svc_handler:
-	// Save context
-	stmfd sp!, {r4-r12,lr}
-	mrs r4, spsr
-	stmfd sp!, {r4}
+    .equ T_bit, 0x20 // TODO: add reference. Thumb bit 5 of cpsr/spsr.
 
-	// Call the handler
-    // FIXME: use ldr?
-	bl INT_SVC_handler
+	// Save registers. Since this is a intentional call, only save preserved registers (ABI)
+	stmfd sp!, {r4-r11,lr} // Increment sp accordingly using '!'.
 
-	// Restore context. Return argument is in r0.
-	ldmfd sp!, {r1}
-	msr spsr, r1
-	ldmfd sp!, {r4-r12,lr}
-	mov r1, lr
-	msr cpsr, r1
-        movs pc,lr
+    // Save spsr
+	mrs r4, spsr // Get spsr.
+	stmfd sp!, {r4, r5} // Save spsr and an other register to keep a 8-byte aligned stack.
+
+    // Get svc number just for fun
+    stmfd sp!, {r0,r1} // Save argument of svc call. Add an other register to keep a 8-byte aligned stack.
+    tst r0, #T_bit             // Occurred in Thumb state?
+    ldrneh r0, [lr,#-2]        // Yes: Load halfword and...
+    bicne r0, r0, #0xFF00      // ...extract comment field
+    ldreq r0, [lr,#-4]         // No: Load word and...
+    biceq r0, r0, #0xFF000000
+    ldmfd sp!, {r0,r1} // Restore argument.
+
+	// Call the handler. Return argument are in r0 and r1 according to ABI.
+	//ldr pc,=INT_SVC_handler
+
+    mov r0, #'a'
+    bl uart_printChar
+
+	// Restore spsr
+	ldmfd sp!, {r4, r5}
+	msr spsr, r4
+
+    // Restore context
+	ldmfd sp!, {r4-r11,lr}
+    movs pc,lr // Exit the handler and return to code. See page A2-20 of the ARM Architecture Manual.
 
 svc_asm_call:
 	svc #0
