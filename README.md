@@ -9,24 +9,11 @@ Add reference for the compilation options document.
 # Compilation
 Each part of the os is a directory. The root Makefile call each subdir's Makefile, and then link everything together.
 See the Makefile at the root of this directory for compilation flags.
-
---------------------------------------------------------------------------
-|   ARM core | Command Line Options                       | multilib     |
-| / ARM arch |                                            |              |
-|------------|--------------------------------------------|--------------|
-| Cortex-A*  | [-mthumb] -march=armv7-a                   | armv7-ar     |
-| (No FP)    |                                            | /thumb       |
-|------------|--------------------------------------------|--------------|
-| Cortex-A*  | [-mthumb] -march=armv7-a -mfloat-abi=softfp| armv7-ar     |
-| (Soft FP)  | -mfpu=vfpv3-d16                            | /thumb       |
-|            |                                            | /softfp      |
-|------------|--------------------------------------------|--------------|
-| Cortex-A*  | [-mthumb] -march=armv7-a -mfloat-abi=hard  | armv7-ar     |
-| (Hard FP)  | -mfpu=vfpv3-d16                            | /thumb       |
-|            |                                            | /fpu         |
---------------------------------------------------------------------------
+- Cortex-A* (No FP): [-mthumb] -march=armv7-a
+- Cortex-A* (Soft FP): [-mthumb] -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16
+- Cortex-A* (Hard FP): [-mthumb] -march=armv7-a -mfloat-abi=hard -mfpu=vfpv3-d16
 - [ ] Compilation: use arm instruction (-marm option in gcc)
-- In the .list, there are stange instructions at the end of section .text.boot (near halt func)
+- In the .list, there are strange instructions at the end of section .text.boot (near halt func)
 
 # Linker script
 - [ ] Output arch options in linker script
@@ -34,7 +21,7 @@ See the Makefile at the root of this directory for compilation flags.
 - [ ] Stack sizes justification.
 
 
-# Assembly
+# Assembly
 - Difference between ".code 32" and ".arm": none.
 - Stack if full descending: the Procedure Call Standard for the ARM Architecture (AAPCS), and ARM and Thumb C and C++ compilers always use a full descending stack. The PUSH and POP instructions assume a full descending stack. (http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473c/Cacbgchh.html)
 

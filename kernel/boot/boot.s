@@ -64,6 +64,7 @@ _start:
     	msr cpsr_c, #MODE_SYS | IRQ_BIT | FIQ_BIT
     	mov sp, r0
 
+    /* Init the .bss segment to zero. Required for C support. */
 	bss_init:
         	ldr r0, =_sbss
         	ldr r1, =_ebss
@@ -78,6 +79,7 @@ _start:
         		cmp r0, r1
 			bne write_zero
 
+    /* Vector table init. */
 	vector_init:
 		ldr r0,=vector_table
 		mcr p15, #0, r0, c12, c0, #0
@@ -104,6 +106,7 @@ _start:
 
 .section ".text"
 .global dump_regs
+/* Display on the uart a dump of all registers. */
 dump_regs:
     // Preserve r0, r1
     mov r0, #'r'
@@ -116,6 +119,6 @@ dump_regs:
     mov pc, lr
 
 .section ".rodata"
-.align 2
-init_done: .ascii "Boot init done."
+.align
+init_done: .asciz "ABCDEF"
 .int 0
